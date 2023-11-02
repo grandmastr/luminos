@@ -1,0 +1,29 @@
+export { default as Logo } from './logo.svg';
+export { default as WhiteFluxLogo } from './white-flux-logo.svg';
+export { default as InfoIcon } from './info.svg';
+export { default as ErrorIcon } from './404.svg';
+export { default as Earn } from './earn.svg';
+export { default as ShockedMonkey } from './shocked-monkey.svg';
+export { default as HangingMonkey } from './hanging-monkey.svg';
+
+export { default as Fiat } from './currencies/naira.svg';
+export { default as Bitcoin } from './currencies/bitcoin.svg';
+export { default as Ethereum } from './currencies/ether.svg';
+export { default as Tether } from './currencies/tether.svg';
+export { default as Tron } from './currencies/tron.svg';
+export { default as Dash } from './currencies/dash.svg';
+export { default as Doge } from './currencies/doge.svg';
+export { default as Litecoin } from './currencies/litecoin.svg';
+
+export { default as Back } from './icons/back.svg';
+export { default as Copy } from './icons/copy.svg';
+export { default as Edit } from './icons/edit.svg';
+export { default as Exit } from './icons/logout.svg';
+export { default as Cog } from './icons/cog.svg';
+export { default as Check } from './icons/check.svg';
+export { default as Eye } from './icons/eye.svg';
+export { default as EyeOff } from './icons/eye-off.svg';
+export { default as Home } from './icons/home.svg';
+export { default as Settings } from './icons/settings.svg';
+export { default as Transact } from './icons/transact.svg';
+export { default as CancelIcon } from './icons/cancel-icon.svg';
