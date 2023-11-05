@@ -59,6 +59,10 @@ const Container = styled('div', cardProps)`
     padding: 0 0.2rem;
     margin-bottom: ${toPx(BOTTOM_NAVIGATION_HEIGHT / 2)};
   `};
+
+  .t-padding {
+    padding-top: 1rem;
+  }
 `;
 
 Container.name = 'CardContainer';

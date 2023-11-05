@@ -1,59 +1,59 @@
 <template>
   <settings-card overflow="none">
     <div :key="'profile'" v-if="profileActive">
-      <div style="position: relative">
-        <div class="avatar-container">
-          <div class="avatar-circle" role="img">
-            <template v-if="updating">
-              <spinner />
-            </template>
-            <template v-else>
-              <img
-                :src="require(`@/assets/avatars/${user.avatar || 1}.webp`)"
-                alt="user avatar"
-              />
-              <div class="edit-pill">
-                <edit
-                  class="edit"
-                  role="button"
-                  @click="monkeysShow = !monkeysShow"
-                  aria-controls="profileMonkeys"
-                />
-              </div>
-            </template>
-          </div>
-        </div>
-      </div>
-      <div class="board-card leaderboard">
-        <template v-if="monkeyboard.fetching">
-          <div class="spinner-container">
-            <spinner />
-          </div>
-        </template>
-        <template v-else>
-          <div class="row">
-            <span class="row-title" id="swapRank"> swap rank </span>
-            <div class="merged-row">
-              <span class="rank-badge" aria-label="position on table">
-                {{ positionOnBoard | positions }}
-              </span>
-              <span class="rank-points" aria-labelledby="swapRank">
-                <template v-if="numberOfSwaps">
-                  {{ numberOfSwaps * 10 }}pts
-                </template>
-                <template v-else> N/A </template>
-              </span>
-            </div>
-          </div>
-          <hr />
-          <div class="row monkeyboard" role="button" @click="openBoard">
-            View Monkeyboard
-          </div>
-        </template>
-      </div>
+      <!--      <div style="position: relative">-->
+      <!--        <div class="avatar-container">-->
+      <!--          <div class="avatar-circle" role="img">-->
+      <!--            <template v-if="updating">-->
+      <!--              <spinner />-->
+      <!--            </template>-->
+      <!--            <template v-else>-->
+      <!--              <img-->
+      <!--                :src="require(`@/assets/avatars/${user.avatar || 1}.webp`)"-->
+      <!--                alt="user avatar"-->
+      <!--              />-->
+      <!--              <div class="edit-pill">-->
+      <!--                <edit-->
+      <!--                  class="edit"-->
+      <!--                  role="button"-->
+      <!--                  @click="monkeysShow = !monkeysShow"-->
+      <!--                  aria-controls="profileMonkeys"-->
+      <!--                />-->
+      <!--              </div>-->
+      <!--            </template>-->
+      <!--          </div>-->
+      <!--        </div>-->
+      <!--      </div>-->
+      <!--      <div class="board-card leaderboard">-->
+      <!--        <template v-if="monkeyboard.fetching">-->
+      <!--          <div class="spinner-container">-->
+      <!--            <spinner />-->
+      <!--          </div>-->
+      <!--        </template>-->
+      <!--        <template v-else>-->
+      <!--          <div class="row">-->
+      <!--            <span class="row-title" id="swapRank"> swap rank </span>-->
+      <!--            <div class="merged-row">-->
+      <!--              <span class="rank-badge" aria-label="position on table">-->
+      <!--                {{ positionOnBoard | positions }}-->
+      <!--              </span>-->
+      <!--              <span class="rank-points" aria-labelledby="swapRank">-->
+      <!--                <template v-if="numberOfSwaps">-->
+      <!--                  {{ numberOfSwaps * 10 }}pts-->
+      <!--                </template>-->
+      <!--                <template v-else> N/A </template>-->
+      <!--              </span>-->
+      <!--            </div>-->
+      <!--          </div>-->
+      <!--          <hr />-->
+      <!--          <div class="row monkeyboard" role="button" @click="openBoard">-->
+      <!--            View Monkeyboard-->
+      <!--          </div>-->
+      <!--        </template>-->
+      <!--      </div>-->
       <div class="board-card">
         <div class="row">
-          <span class="row-title" id="moneyTag"> monkey tag </span>
+          <span class="row-title" id="moneyTag"> username </span>
           <div class="merged-row" aria-labelledby="moneyTag">
             <div class="merged-row user">
               <span v-if="user.swap_tag"> {{ user.swap_tag }} </span>
@@ -366,6 +366,7 @@ export default {
     Exit,
     Edit,
     SettingsCard,
+    // eslint-disable-next-line vue/no-unused-components
     Spinner,
   },
   computed: {

@@ -313,7 +313,9 @@ export default {
         wallet => wallet.currency === assetToSymbol(this.fromCurrency),
       );
 
-      return coin.currency === 'NGN' ? coin?.balance / 100 : coin?.balance;
+      return coin.currency === 'NGN'
+        ? coin?.available_balance / 100
+        : coin?.available_balance;
     },
     ...mapGetters('wallets', ['wallets']),
     ...mapGetters('user', ['activeSwapCoin']),

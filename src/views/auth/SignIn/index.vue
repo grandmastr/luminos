@@ -1,20 +1,29 @@
 <template>
   <main>
-    <SignUpHead text="Create your password" />
+    <!--    <SignUpHead text="Enter your email" />-->
+    <Input
+      type="email"
+      label="email"
+      placeholder=" "
+      v-model="email"
+      autocomplete="email"
+      autofocus
+      class="mb-2"
+    ></Input>
     <Input
       type="password"
-      label="password"
+      label="Password"
       placeholder=" "
       v-model="password"
-      autocomplete="new-password"
+      autocomplete="email"
       class="mb-5"
     ></Input>
     <Button
       text="Next"
-      :disabled="!password"
       @click="clickEvent"
+      :disabled="!((email && email.includes('@')) || password)"
       styles="margin-top: auto"
-    ></Button>
+    />
   </main>
 </template>
 
@@ -24,24 +33,27 @@ import { auth } from '@/api';
 import { loadRoute } from '@/helpers';
 
 export default {
-  name: 'Password',
+  name: 'SignIn',
   mixins: [signUpMixin],
   data() {
     return {
-      password: null,
-      processing: false,
+      email: '',
+      password: '',
     };
   },
   methods: {
     clickEvent() {
-      this.setSignUpDetails({ password: this.password });
+      this.setSignUpDetails({ email: this.email });
 
-      this.signUp();
+      this.signIn();
     },
-    async signUp() {
+    async signIn() {
       this.processing = true;
       try {
-        const { success, response } = await auth.signUp(this.signUpDetails);
+        const { success, response } = await auth.signIn({
+          email: this.email,
+          password: this.password,
+        });
 
         if (success) {
           await this.syncToken(response.access);
@@ -55,12 +67,16 @@ export default {
     },
   },
   mounted() {
-    this.password = this.signUpDetails?.password || '';
+    this.email = this.signUpDetails?.email || '';
   },
 };
 </script>
 
 <style scoped>
+.mb-2 {
+  margin-bottom: 20px;
+}
+
 .mb-5 {
   margin-bottom: 44px;
 }

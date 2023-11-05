@@ -1,7 +1,14 @@
 import Vue from 'vue';
 import Vuex from 'vuex';
 
-import { monkeyboard, pool, swaps, user, wallets } from '@/store/modules';
+import {
+  monkeyboard,
+  pool,
+  swaps,
+  theme,
+  user,
+  wallets,
+} from '@/store/modules';
 
 Vue.use(Vuex);
 
@@ -16,5 +23,6 @@ export default new Vuex.Store({
     swaps,
     monkeyboard,
     pool,
+    theme,
   },
 });

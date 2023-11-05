@@ -9,16 +9,9 @@
           <div>
             <h1>Welcome!</h1>
             <span> Please log into your account and lets jump right in </span>
-            <flux-button @click="openFluxAccounts">
-              <div>
-                <white-flux-logo class="logo" />
-                Sign in with Flux
-                <info-icon
-                  class="info-icon"
-                  title="Swapmonkey is powered by Flux"
-                />
-              </div>
-            </flux-button>
+            <router-link to="/sign-in">
+              <styled-button> Login</styled-button>
+            </router-link>
             <router-link to="/sign-up">
               <styled-button> Create an account</styled-button>
             </router-link>
@@ -52,7 +45,7 @@ import { mapActions } from 'vuex';
 
 import { Button, Card } from '@/components';
 import { loadRoute, setMaxWidth } from '@/helpers';
-import { InfoIcon, Logo, WhiteFluxLogo } from '@/assets';
+import { Logo } from '@/assets';
 
 const rotate = keyframes`
   to {
@@ -221,9 +214,6 @@ export default {
     StyledCard,
     Logo,
     StyledButton,
-    FluxButton,
-    WhiteFluxLogo,
-    InfoIcon,
     WaitOverlay,
   },
   methods: {

@@ -10,6 +10,12 @@ import './lib/filters';
 Vue.config.productionTip = false;
 Vue.use(Message, { name: 'toast' });
 
+const theme = window.matchMedia('(prefers-color-scheme: dark)').matches
+  ? 'dark'
+  : 'light';
+
+localStorage.setItem('lumino_theme', theme);
+
 new Vue({
   router,
   store,

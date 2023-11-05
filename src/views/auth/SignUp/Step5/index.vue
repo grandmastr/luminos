@@ -29,8 +29,8 @@ import styled from 'vue-styled-components';
 import { mapActions } from 'vuex';
 
 import signUpMixin from '@/views/auth/SignUp/signUpMixin';
-import { auth } from '@/api';
-import { loadRoute } from '@/helpers';
+// import { auth } from '@/api';
+// import { loadRoute } from '@/helpers';
 
 const ErrorMessage = styled('ul')`
   li {
@@ -71,14 +71,15 @@ export default {
     async signUp() {
       this.processing = true;
       try {
-        const data = await auth.signUp(this.signUpDetails);
+        console.log(this.signUpDetails);
+        // const data = await auth.signUp(this.signUpDetails);
 
-        if (data?.success) {
-          await this.syncToken(data.response.token);
-          await this.syncUserData({ user: data.response.user });
-
-          loadRoute();
-        }
+        // if (data?.success) {
+        //   await this.syncToken(data.response.token);
+        //   await this.syncUserData({ user: data.response.user });
+        //
+        //   loadRoute();
+        // }
       } finally {
         this.processing = false;
       }

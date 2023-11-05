@@ -35,9 +35,9 @@ export default Vue.component('App', {
   render() {
     return (
       <ThemeProvider theme={theme}>
-        <Transition name={'fade'}>
-          <RouterView />
-        </Transition>
+        <transition name={'fade'}>
+          <router-view />
+        </transition>
       </ThemeProvider>
     );
   },

@@ -33,7 +33,7 @@ export default {
   methods: {
     clickEvent() {
       this.setSignUpDetails({ email: this.email });
-      this.$router.push('sign-up/step-2');
+      this.$router.push('sign-up/step-4');
     },
   },
   mounted() {

@@ -12,6 +12,7 @@ export { default as SignUpHead } from '../fragments/signup';
 export { default as Spinner } from './Spinner';
 export { default as Radio } from './Radio';
 export { default as Empty } from './EmptyState';
+export { default as ThemeToggle } from './ThemeToggle';
 export { default as BottomNavigation } from './BottomNavigation';
 
 export { default as MonkeyBoard } from '../fragments/dashboard/Settings/MonkeyBoard';

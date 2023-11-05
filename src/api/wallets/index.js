@@ -1,16 +1,52 @@
 import { errorHandler, server } from '@/lib';
-import { unshiftArray } from '@/helpers';
 import toast from 'vue-m-message';
+import { unshiftArray } from '@/helpers';
 
 export default {
   async fetchWallets() {
     try {
-      const { status, data: response } = await server.get('/crypto/wallets/');
+      const { status, data: response } = await server.get(
+        '/api/wallets/crypto/',
+      );
 
       if (status === 200) {
         return {
           success: true,
           response: unshiftArray(response.results, 'currency', 'NGN'),
+        };
+      }
+    } catch ({ response }) {
+      errorHandler(response);
+    }
+  },
+  async getFiatWallets() {
+    try {
+      const { status, data: response } = await server.get('/api/wallets/fiat/');
+
+      if (status === 200) {
+        return {
+          success: true,
+          response: response.results,
+        };
+      }
+    } catch ({ response }) {
+      errorHandler(response);
+    }
+  },
+  async createAddress({ asset, network }) {
+    try {
+      const { status, data: response } = await server.post(
+        '/api/wallets/crypto/',
+        {
+          asset,
+          network,
+        },
+      );
+
+      if (status === 200) {
+        return {
+          success: true,
+          response,
         };
       }
     } catch ({ response }) {

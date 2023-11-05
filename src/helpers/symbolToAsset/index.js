@@ -17,6 +17,8 @@ const symbolToAsset = (symbol = 'btc') => {
       return 'dash';
     case 'usdt':
       return 'tether';
+    case 'xlm':
+      return 'doge';
     default:
       return 'bitcoin';
   }

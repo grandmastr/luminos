@@ -1,17 +1,5 @@
 <template>
   <card>
-    <template v-if="isMobile && user.account_type !== 'POOL_PROVIDER'">
-      <container class="white-card">
-        <div class="pool-mobile__container">
-          <earn class="earn-svg" />
-          <h3>earn on the fly</h3>
-          <p>Become a pool provider.</p>
-          <span role="button" @click="$emit('becomeAProvider')"
-            >Register here <i data-feather="chevron-right"
-          /></span>
-        </div>
-      </container>
-    </template>
     <container :fetching="wallets.fetching">
       <div>
         <div class="action-container">
@@ -21,13 +9,13 @@
             </div>
             <span> Deposit </span>
           </div>
-          <div class="divider" />
-          <div class="button" role="button" @click="openSendCoinModal">
-            <div class="icon-container arrow-up-right">
-              <i data-feather="arrow-up-right" />
-            </div>
-            <span> Send </span>
-          </div>
+          <!--          <div class="divider" />-->
+          <!--          <div class="button" role="button" @click="openSendCoinModal">-->
+          <!--            <div class="icon-container arrow-up-right">-->
+          <!--              <i data-feather="arrow-up-right" />-->
+          <!--            </div>-->
+          <!--            <span> Send </span>-->
+          <!--          </div>-->
         </div>
         <hr />
       </div>
@@ -55,6 +43,38 @@
                   <div
                     class="row"
                     v-for="coin in yourCoins"
+                    :key="coin.asset"
+                    role="button"
+                    @click="openSwapModal(coin)"
+                  >
+                    <div class="box">
+                      <component :is="coin.asset | symbolToAsset" />
+                      <span>
+                        {{ coin.asset | symbolToAsset | capitalize }}
+                        <span>({{ coin.asset }})</span>
+                      </span>
+                    </div>
+                    <template v-if="hideBalance">
+                      <span class="amount"> ****** </span>
+                    </template>
+                    <template v-else>
+                      <span class="amount" v-if="coin.currency === 'NGN'"
+                        >{{ (coin.available_balance / 100) | formatAmount }}
+                      </span>
+                      <span class="amount" v-else>
+                        {{ coin.available_balance | formatNumber }}</span
+                      >
+                    </template>
+                  </div>
+                </div>
+              </div>
+            </template>
+            <template v-if="!!fiatCoins.length">
+              <div class="other-coins">
+                <div class="coin-dets__container t-padding">
+                  <div
+                    class="row"
+                    v-for="coin in fiatCoins"
                     :key="coin.currency"
                     role="button"
                     @click="openSwapModal(coin)"
@@ -66,17 +86,6 @@
                         <span>({{ coin.currency }})</span>
                       </span>
                     </div>
-                    <template v-if="hideBalance">
-                      <span class="amount"> ****** </span>
-                    </template>
-                    <template v-else>
-                      <span class="amount" v-if="coin.currency === 'NGN'"
-                        >{{ (coin.balance / 100) | formatAmount }}
-                      </span>
-                      <span class="amount" v-else>
-                        {{ coin.balance | formatNumber }}</span
-                      >
-                    </template>
                   </div>
                 </div>
               </div>
@@ -93,10 +102,10 @@
                     @click="openSwapModal(coin)"
                   >
                     <div class="box">
-                      <component :is="coin.currency | symbolToAsset" />
+                      <component :is="coin.asset | symbolToAsset" />
                       <span>
-                        {{ coin.currency | symbolToAsset | capitalize }}
-                        <span>({{ coin.currency }})</span>
+                        {{ coin.asset | symbolToAsset | capitalize }}
+                        <span>({{ coin.asset }})</span>
                       </span>
                     </div>
                   </div>
@@ -498,16 +507,20 @@ export default {
     feather.replace();
 
     await this.fetchWallets();
+    console.log('omah', this.wallets);
   },
   computed: {
+    fiatCoins() {
+      return this.wallets.results.filter(wallet => wallet.currency === 'NGN');
+    },
     yourCoins() {
       return this.removeFiat(
-        this.wallets.results.filter(wallet => !!wallet.balance),
+        this.wallets.results.filter(wallet => !!wallet.available_balance),
       );
     },
     otherCoins() {
       return this.removeFiat(
-        this.wallets.results.filter(wallet => !wallet.balance),
+        this.wallets.results.filter(wallet => !wallet.available_balance),
       );
     },
     ...mapGetters('wallets', ['wallets']),

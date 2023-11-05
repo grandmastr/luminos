@@ -83,13 +83,13 @@
         </template>
       </template>
       <template>
-        <modal
-          :visible="!downTimeWarning"
-          :dismiss="closeDownTimeWarning"
-          width="540"
-        >
-          <down-time-warning @dismiss="closeDownTimeWarning" />
-        </modal>
+        <!--        <modal-->
+        <!--          :visible="!downTimeWarning"-->
+        <!--          :dismiss="closeDownTimeWarning"-->
+        <!--          width="540"-->
+        <!--        >-->
+        <!--          <down-time-warning @dismiss="closeDownTimeWarning" />-->
+        <!--        </modal>-->
         <modal
           :visible="monkeyBoard"
           title="Monkeyboard"
@@ -196,6 +196,7 @@
     </main>
     <bottom-navigation v-if="isMobile" @goToTab="switchTabs" />
     <v-offline @detected-condition="checkForNetwork" />
+    <theme-toggle />
   </container>
 </template>
 
@@ -219,6 +220,7 @@ import {
   SwapCoins,
   UpdatePhoneNumber,
   VerifyPhoneNumber,
+  ThemeToggle,
 } from '@/components';
 import { Logo } from '@/assets';
 import { loadRoute, query, setMaxWidth, wait } from '@/helpers';
@@ -263,6 +265,7 @@ const StyledButton = styled(Button)`
 
 const Container = styled('div')`
   background-color: ${({ theme }) => theme.colors.white};
+  position: relative;
 
   ${query.maxWidth('large1')`
     background-color: ${({ theme }) => theme.colors['ghost-white-background']};
@@ -369,7 +372,9 @@ export default {
     Logout,
     ChangePassword,
     BottomNavigation,
+    // eslint-disable-next-line vue/no-unused-components
     DownTimeWarning,
+    ThemeToggle,
   },
   mounted() {
     feather.replace();

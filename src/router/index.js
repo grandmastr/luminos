@@ -14,9 +14,22 @@ const routes = [
   },
   {
     path: '/welcome',
-    name: 'SignIn',
+    name: 'Welcome',
     component: () =>
-      import(/* webpackChunkName: "SignIn" */ '@/views/auth/Welcome'),
+      import(/* webpackChunkName: "Welcome" */ '@/views/auth/Welcome'),
+  },
+  {
+    path: '/sign-in',
+    component: () =>
+      import(/* webpackChunkName: "SignIn" */ '@/views/auth/SignUp'),
+    children: [
+      {
+        path: '/',
+        name: 'SignIn',
+        component: () =>
+          import(/* webpackChunkName: "SignIn" */ '@/views/auth/SignIn'),
+      },
+    ],
   },
   {
     path: '/sign-up',
@@ -78,33 +91,33 @@ const router = new VueRouter({
   routes,
 });
 
-const test = false;
-if (test)
-  router.beforeEach(async (to, from, next) => {
-    // eslint-disable-next-line no-undef
-    // eslint-disable-next-line no-unused-vars
-    const isAuthenticated = await Cookies?.get('bravo-zulu');
+router.beforeEach(async (to, from, next) => {
+  // eslint-disable-next-line no-undef
+  // eslint-disable-next-line no-unused-vars
+  const isAuthenticated = await Cookies?.get('bravo-zulu');
+  console.log('testing here against');
 
-    const authRoutes = [
-      'SignIn',
-      'SignUp',
-      'SignUpName',
-      'SignUpCountry',
-      'SignUpSwapTag',
-      'SignUpPassword',
-    ];
+  const authRoutes = [
+    'SignIn',
+    'SignUp',
+    'Welcome',
+    'SignUpName',
+    'SignUpCountry',
+    'SignUpSwapTag',
+    'SignUpPassword',
+  ];
 
-    if (authRoutes.includes(to.name)) {
-      if (isAuthenticated) {
-        next({ name: 'Dashboard' });
-      }
-    } else {
-      if (!isAuthenticated) {
-        next({ name: 'SignIn' });
-      }
+  if (authRoutes.includes(to.name)) {
+    if (isAuthenticated) {
+      next({ name: 'Dashboard' });
     }
+  } else {
+    if (!isAuthenticated) {
+      next({ name: 'SignIn' });
+    }
+  }
 
-    next();
-  });
+  next();
+});
 
 export default router;

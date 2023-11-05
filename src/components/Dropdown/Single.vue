@@ -78,7 +78,7 @@
             :is="item.name"
             class="list-image"
           />
-          {{ item.name }} <span v-if="item.code">({{ item.code }})</span>
+          {{ item.name }}<span v-if="item.network">({{ item.network }})</span>
         </li>
       </ul>
     </div>
@@ -88,6 +88,7 @@
 
 <script>
 import styled from 'vue-styled-components';
+
 import mixin from './mixin';
 
 import {
@@ -282,6 +283,7 @@ export default {
     Dash,
     Litecoin,
     Doge,
+    Stellar: Doge,
   },
   props: {
     list: {

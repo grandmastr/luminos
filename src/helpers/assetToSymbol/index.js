@@ -16,6 +16,8 @@ const assetToSymbol = (symbol = 'btc') => {
       return 'USDT';
     case 'litecoin':
       return 'LTC';
+    case 'Stellar':
+      return 'XLM';
     default:
       return 'BTC';
   }

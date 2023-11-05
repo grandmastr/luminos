@@ -2,29 +2,26 @@ export default [
   {
     name: 'Bitcoin',
     code: 'BTC',
+    network: 'BTC',
   },
   {
     name: 'Ethereum',
     code: 'ETH',
+    network: 'ERC20',
   },
   {
     name: 'Tether',
     code: 'USDT',
+    network: 'ERC20',
   },
   {
-    name: 'Tron',
-    code: 'TRX',
+    name: 'Tether',
+    code: 'USDT',
+    network: 'TRC20',
   },
   {
-    name: 'Dash',
-    code: 'DASH',
-  },
-  {
-    name: 'Doge',
-    code: 'DOGE',
-  },
-  {
-    name: 'Litecoin',
-    code: 'LTC',
+    name: 'Stellar',
+    code: 'XLM',
+    network: 'XLM',
   },
 ];

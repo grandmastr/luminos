@@ -33,16 +33,23 @@ const actions = {
     });
 
     try {
-      const data = await wallets.fetchWallets();
+      const getCrypto = async () => await wallets.fetchWallets();
+      const getFiat = async () => await wallets.getFiatWallets();
 
-      if (data?.success) {
+      const [cryptoData, fiatData] = await Promise.all([
+        getCrypto(),
+        getFiat(),
+      ]);
+
+      if (cryptoData?.success && fiatData?.success) {
         commit('setWallets', {
           fetching: false,
-          results: data.response,
+          results: [...cryptoData.response, ...fiatData.response],
         });
 
         return {
-          ...data,
+          ...fiatData,
+          ...cryptoData,
         };
       }
     } finally {

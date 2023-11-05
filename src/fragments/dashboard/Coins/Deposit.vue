@@ -1,11 +1,11 @@
 <template>
   <Deposit>
-    <template v-if="wallets.fetching">
-      <div class="spinner-container">
-        <spinner />
-      </div>
-    </template>
-    <template v-else>
+    <!--    <template v-if="wallets.fetching">-->
+    <!--      <div class="spinner-container">-->
+    <!--        <spinner />-->
+    <!--      </div>-->
+    <!--    </template>-->
+    <template>
       <SingleDropdown
         label="Select Coin"
         type="text"
@@ -34,6 +34,7 @@ import { mapActions, mapGetters } from 'vuex';
 import { SingleDropdown, Spinner } from '@/components';
 import { Copy } from '@/assets';
 import { assetToSymbol, copy } from '@/helpers';
+import { wallets } from '@/api';
 
 const Deposit = styled('article')`
    {
@@ -102,39 +103,84 @@ export default {
     SingleDropdown,
     Deposit,
     Copy,
+    // eslint-disable-next-line vue/no-unused-components
     Spinner,
   },
   data() {
     return {
       coin: '',
       address: '',
+      processing: false,
     };
   },
   mounted() {
+    console.log('soso');
     if (!this.wallets.results.length && !this.wallets.fetching) {
       this.fetchWallets();
+      console.log('target', this.wallets);
     }
   },
   computed: mapGetters('wallets', ['wallets']),
   methods: {
     setCoin(currency) {
-      this.coin = currency.name;
+      this.coin = `${currency.name} (${currency.network})`;
     },
     copyAddress() {
       copy(this.address, 'Copied wallets address');
     },
-    setAddress(value) {
-      this.address =
-        this.wallets.results.find(
-          wallet => wallet.currency === assetToSymbol(value),
-        )?.address || '';
+    async setAddress(value) {
+      const token = value.split(' ')[0];
+      const network = value.split(' ')[1].replace(/[()]/g, '');
+
+      const index = this.wallets.results.findIndex(
+        wallet =>
+          wallet.asset === assetToSymbol(token) && wallet.network === network,
+      );
+      console.log(index);
+      console.log(assetToSymbol(token), network, value);
+      console.log(this.wallets.results);
+      console.log(
+        'reward',
+        this.wallets.results.findIndex(
+          wallet =>
+            wallet.asset === assetToSymbol(token) && wallet.network === network,
+        ),
+      );
+
+      if (index < 0) {
+        this.processing = true;
+
+        try {
+          const { success } = await wallets.createAddress({
+            asset: assetToSymbol(token),
+            network,
+          });
+
+          if (success) {
+            await this.fetchWallets();
+          }
+        } finally {
+          this.processing = false;
+        }
+      } else {
+        this.address = this.wallets.results[index].address;
+      }
+
+      // this.address =
+      //   this.wallets.results.find(
+      //     wallet => wallet.currency === assetToSymbol(value),
+      //   )?.address || '';
     },
     ...mapActions('wallets', ['fetchWallets']),
   },
   watch: {
     coin(value) {
+      this.address = '';
       this.setAddress(value);
     },
+    // wallets() {
+    //   this.setAddress(this.coin);
+    // },
   },
 };
 </script>
