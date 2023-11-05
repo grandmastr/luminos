@@ -3,7 +3,7 @@
     <div class="hm">
       <h3>Upgrade in progress...</h3>
       <p>
-        Thank you for visiting Swapmonkey. Swaps are currently down as we are
+        Thank you for visiting Lumino. Swaps are currently down as we are
         working on some exciting new features, however you can still send and
         receive crypto assets. We apologise for the inconvenience. Please check
         back soon.

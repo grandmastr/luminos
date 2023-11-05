@@ -145,7 +145,7 @@
       >
         <div class="button-label"><span> Swap now </span></div>
         <div class="monkey">
-          <img :src="require('@/assets/avatars/1.webp')" alt="swapmonkey" />
+          <img :src="require('@/assets/avatars/1.webp')" alt="lumino" />
         </div>
       </floating-button>
     </template>
