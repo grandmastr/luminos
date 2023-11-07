@@ -1,6 +1,6 @@
 import Vue from 'vue';
 
-import { swap } from '@/api';
+import { transactions } from '@/api';
 
 const state = () => ({
   fetching: false,
@@ -18,7 +18,7 @@ const actions = {
       results: getters.swaps.results,
     });
     try {
-      const data = await swap.fetchSwaps();
+      const data = await transactions.getList();
 
       if (data?.success) {
         commit('setSwaps', {

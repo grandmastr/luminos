@@ -1,36 +1,36 @@
 <template>
   <swaps-card :fetching="swaps.fetching || pool.fetching">
-    <template v-if="user.account_type === 'POOL_PROVIDER'">
-      <div class="pool-balance__container">
-        <template v-if="pool.fetching">
-          <div class="spinner-container1">
-            <spinner size="small" />
-          </div>
-        </template>
-        <template v-else>
-          <div>
-            <h4>pool balance</h4>
-            <div>
-              <span class="amount">
-                <template v-if="hideBalance"> ******* </template>
-                <template v-else>
-                  {{ poolTotalCurrentBalance | formatAmount }}
-                </template>
-              </span>
-            </div>
-          </div>
-          <hr />
-          <div class="pool-balance__details">
-            <div class="currencies">
-              <component v-for="coin in stash" :key="coin" :is="coin" />
-            </div>
-            <span role="button" @click="openPoolDetails"
-              >More details <i data-feather="chevron-right" style="top: 0"
-            /></span>
-          </div>
-        </template>
-      </div>
-    </template>
+    <!--    <template v-if="user.account_type === 'POOL_PROVIDER'">-->
+    <!--      <div class="pool-balance__container">-->
+    <!--        <template v-if="pool.fetching">-->
+    <!--          <div class="spinner-container1">-->
+    <!--            <spinner size="small" />-->
+    <!--          </div>-->
+    <!--        </template>-->
+    <!--        <template v-else>-->
+    <!--          <div>-->
+    <!--            <h4>pool balance</h4>-->
+    <!--            <div>-->
+    <!--              <span class="amount">-->
+    <!--                <template v-if="hideBalance"> ******* </template>-->
+    <!--                <template v-else>-->
+    <!--                  {{ poolTotalCurrentBalance | formatAmount }}-->
+    <!--                </template>-->
+    <!--              </span>-->
+    <!--            </div>-->
+    <!--          </div>-->
+    <!--          <hr />-->
+    <!--          <div class="pool-balance__details">-->
+    <!--            <div class="currencies">-->
+    <!--              <component v-for="coin in stash" :key="coin" :is="coin" />-->
+    <!--            </div>-->
+    <!--            <span role="button" @click="openPoolDetails"-->
+    <!--              >More details <i data-feather="chevron-right" style="top: 0"-->
+    <!--            /></span>-->
+    <!--          </div>-->
+    <!--        </template>-->
+    <!--      </div>-->
+    <!--    </template>-->
     <tabs @tabClick="changeTab" :tabs="tabs" default="2" />
     <div class="container">
       <div class="swap-transactions__container">
@@ -110,12 +110,12 @@ import { mapActions, mapGetters } from 'vuex';
 
 import SwapTransaction from './SwapTransaction';
 import { Button, Card, Empty, Spinner, Tabs } from '@/components';
-import { Bitcoin, Dash, Ethereum, Fiat, Litecoin, Tether } from '@/assets';
 import { query } from '@/helpers';
 import store from '@/store';
 
 const accountType = store.getters['user/user']?.account_type;
 
+// eslint-disable-next-line no-unused-vars
 const StyledButton = styled(Button)`
   width: 180px;
   padding: 0 0 0 1.25em;
@@ -503,18 +503,11 @@ export default {
     Tabs,
     SwapTransaction,
     Spinner,
-    Bitcoin,
-    Tether,
-    Fiat,
-    Ethereum,
-    Litecoin,
-    Dash,
     Empty,
-    StyledButton,
     SwapDetails,
   },
   async mounted() {
-    await Promise.all([this.getSwaps(), this.getPoolDetails()]);
+    await this.getSwaps();
 
     // eslint-disable-next-line no-unused-expressions
     AOS?.init();

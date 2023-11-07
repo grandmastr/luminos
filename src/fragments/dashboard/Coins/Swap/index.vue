@@ -75,28 +75,6 @@
           </div>
         </div>
       </transition-group>
-      <div role="radiogroup">
-        <check
-          v-for="(method, index) in methods"
-          :key="method.id"
-          :class="{ active: instant === (method.id === 'instant') }"
-          role="radio"
-          :aria-selected="method.id === chosenMethod"
-          @click="instant = method.id === 'instant'"
-        >
-          <div class="heading">
-            <h4 class="title">{{ method.name }}</h4>
-            <Radio
-              @change="chosenMethod = method.id"
-              :index="index + 1"
-              name="swap-method"
-              :value="method.id"
-              :selected="instant === (method.id === 'instant')"
-            />
-          </div>
-          <p>{{ method.description }}</p>
-        </check>
-      </div>
       <Button :text="!!quote ? 'Swap' : 'Get Quote'" :disabled="disabled" />
     </form>
   </swap-coins-container>
@@ -115,8 +93,9 @@ import {
   symbolToAsset,
 } from '@/helpers';
 import { swap } from '@/api';
-import { Button, Dropdown, Radio } from '@/components';
+import { Button, Dropdown } from '@/components';
 
+// eslint-disable-next-line no-unused-vars
 const Check = styled.div`
    {
     border: 1.5px solid ${({ theme }) => theme.colors.text.secondary.lighter};
@@ -247,8 +226,6 @@ export default {
   components: {
     SwapCoinsContainer,
     Dropdown,
-    Radio,
-    Check,
     Button,
   },
   data() {
@@ -261,29 +238,18 @@ export default {
       step2: false,
       processing: false,
       quote: '',
-      instant: true,
       chosenMethod: '',
-      methods: [
-        {
-          name: 'Instant swap',
-          description: 'Have your swap order fulfilled instantly',
-          id: 'instant',
-        },
-        {
-          name: 'Manual swap',
-          description: 'Order may take up to 2 hours',
-          id: 'manual',
-        },
-      ],
     };
   },
   computed: {
     fromList() {
+      console.log('sir', this.activeSwapCoin);
       if (this.activeSwapCoin) {
         return [
           {
-            name: capitalize(symbolToAsset(this.activeSwapCoin.currency)),
-            code: this.activeSwapCoin.currency,
+            name: capitalize(symbolToAsset(this.activeSwapCoin.asset)),
+            code: this.activeSwapCoin.asset,
+            network: this.activeSwapCoin.network,
           },
           ...cryptos,
         ];
@@ -310,10 +276,16 @@ export default {
     },
     fromCurrencyBalance() {
       const coin = this.wallets.results.find(
-        wallet => wallet.currency === assetToSymbol(this.fromCurrency),
+        wallet => wallet.asset === assetToSymbol(this.fromCurrency),
       );
 
-      return coin.currency === 'NGN'
+      console.log(
+        coin.asset === 'NGN'
+          ? coin?.available_balance / 100
+          : coin?.available_balance,
+      );
+
+      return coin.asset === 'NGN'
         ? coin?.available_balance / 100
         : coin?.available_balance;
     },
@@ -334,10 +306,9 @@ export default {
       this.processing = true;
       try {
         const data = await swap.getQuote({
-          amount: this.fromAmount,
-          have: assetToSymbol(this.fromCurrency),
-          want: assetToSymbol(this.toCurrency),
-          instant: this.instant,
+          sendAmount: this.fromAmount,
+          sendCurrency: assetToSymbol(this.fromCurrency),
+          receiveCurrency: assetToSymbol(this.toCurrency),
         });
 
         if (data?.success) {
@@ -362,7 +333,6 @@ export default {
           amount: this.fromAmount,
           have: assetToSymbol(this.fromCurrency),
           swapQuote: this.quote.id,
-          instant: this.instant,
         });
 
         if (data?.success) {
@@ -424,9 +394,7 @@ export default {
   },
   mounted() {
     if (this.activeSwapCoin)
-      this.fromCurrency = capitalize(
-        symbolToAsset(this.activeSwapCoin?.currency),
-      );
+      this.fromCurrency = capitalize(symbolToAsset(this.activeSwapCoin?.asset));
     else this.toCurrency = 'Bitcoin';
   },
 };

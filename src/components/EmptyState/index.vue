@@ -1,7 +1,7 @@
 <template>
   <container>
     <div>
-      <shocked-monkey />
+<!--      <shocked-monkey />-->
       <span class="title" v-if="title"> {{ title }} </span>
       <span class="title" v-else> No {{ type }} swaps </span>
       <span class="shalaye">
@@ -55,6 +55,7 @@ const Container = styled('div')`
 
 export default {
   name: 'Empty',
+  // eslint-disable-next-line vue/no-unused-components
   components: { Container, ShockedMonkey },
   props: {
     type: {

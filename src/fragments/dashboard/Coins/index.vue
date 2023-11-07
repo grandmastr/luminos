@@ -124,9 +124,9 @@
                 @click="openSwapModal"
                 :disabled="wallets.fetching"
               >
-                <div class="monkey" aria-hidden="true">
-                  <img :src="monkey" alt="monkey" />
-                </div>
+                <!--                <div class="monkey" aria-hidden="true">-->
+                <!--                  <img :src="monkey" alt="monkey" />-->
+                <!--                </div>-->
                 <span>
                   Swap now
                   <i data-feather="chevron-right" class="chevron-right"></i>
@@ -144,9 +144,9 @@
         @click="$emit('openSwapModal')"
       >
         <div class="button-label"><span> Swap now </span></div>
-        <div class="monkey">
-          <img :src="require('@/assets/avatars/1.webp')" alt="lumino" />
-        </div>
+        <!--        <div class="monkey">-->
+        <!--          <img :src="require('@/assets/avatars/1.webp')" alt="lumino" />-->
+        <!--        </div>-->
       </floating-button>
     </template>
   </card>
@@ -170,6 +170,7 @@ import {
   Litecoin,
   Tether,
   Tron,
+  Stellar,
 } from '@/assets';
 import { BOTTOM_NAVIGATION_HEIGHT } from '@/constants';
 import { query, toPx } from '@/helpers';
@@ -206,7 +207,7 @@ const FloatingButton = styled('div')`
     border-radius: 50%;
     background-color: ${({ theme }) => theme.colors.purple};
     padding: 12px;
-    box-shadow: 0px 4px 20px 1px rgba(0, 0, 0, 0.1);
+    box-shadow: 0 4px 20px 1px rgba(0, 0, 0, 0.1);
   }
 `;
 
@@ -218,6 +219,7 @@ const StyledButton = styled(Button)`
   position: relative;
   top: 18px;
   overflow: hidden;
+  padding-left: 2rem;
 
   div.monkey {
     padding: 12px 20px;
@@ -496,6 +498,7 @@ export default {
     Tron,
     Doge,
     Litecoin,
+    Stellar,
     StyledButton,
     Spinner,
     Earn,
@@ -507,7 +510,6 @@ export default {
     feather.replace();
 
     await this.fetchWallets();
-    console.log('omah', this.wallets);
   },
   computed: {
     fiatCoins() {

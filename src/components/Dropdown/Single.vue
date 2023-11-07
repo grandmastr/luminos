@@ -100,6 +100,7 @@ import {
   Litecoin,
   Tether,
   Tron,
+  Stellar,
 } from '@/assets';
 import { cryptos } from '@/lib';
 
@@ -283,7 +284,7 @@ export default {
     Dash,
     Litecoin,
     Doge,
-    Stellar: Doge,
+    Stellar,
   },
   props: {
     list: {

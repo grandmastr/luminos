@@ -1,16 +1,16 @@
 import { errorHandler, server } from '@/lib';
 
 export default {
-  async createRequest({ amount, have, want, swapQuote, instant }) {
+  async createRequest({ sendNetwork, receiveNetwork, swapQuote }) {
     try {
-      const { status, data: response } = await server.post('/swaps/requests/', {
-        amount: have === 'NGN' ? amount * 100 : amount,
-        have,
-        want,
-        swap_quote: swapQuote,
-        instant,
-      });
-
+      const { status, data: response } = await server.post(
+        '/api/crypto/swap_quote_confirm/',
+        {
+          send_network: sendNetwork,
+          receive_network: receiveNetwork,
+          quote_id: swapQuote,
+        },
+      );
       if (status === 201) {
         return {
           success: true,
@@ -19,15 +19,11 @@ export default {
       }
     } catch ({ response }) {
       if (response.status === 400 && response.data.swap_quote) {
-        const data = await this.getQuote({ have, want, amount, instant });
+        const data = await this.getQuote({});
 
         if (data?.success) {
           await this.createRequest({
-            amount,
-            have,
-            want,
             swapQuote: data?.response.id,
-            instant,
           });
         }
       } else errorHandler(response);
@@ -47,14 +43,31 @@ export default {
       errorHandler(response);
     }
   },
-  async getQuote({ have, want, amount, instant = false }) {
+  async getQuote({ sendCurrency, receiveCurrency, sendAmount, receiveAmount }) {
     try {
-      const { status, data: response } = await server.post('/swaps/quote/', {
-        have,
-        want,
-        amount: have === 'NGN' ? amount * 100 : amount,
-        instant,
-      });
+      let body = {
+        send_currency: sendCurrency,
+        receive_currency: receiveCurrency,
+      };
+
+      if (sendAmount) {
+        body = {
+          ...body,
+          send_amount: sendAmount,
+        };
+      } else {
+        body = {
+          ...body,
+          receive_amount: receiveAmount,
+        };
+      }
+
+      const { status, data: response } = await server.post(
+        '/api/crypto/swap_quote/',
+        {
+          ...body,
+        },
+      );
 
       if (status === 201) {
         return {

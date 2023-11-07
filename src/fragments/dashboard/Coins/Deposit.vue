@@ -1,10 +1,5 @@
 <template>
   <Deposit>
-    <!--    <template v-if="wallets.fetching">-->
-    <!--      <div class="spinner-container">-->
-    <!--        <spinner />-->
-    <!--      </div>-->
-    <!--    </template>-->
     <template>
       <SingleDropdown
         label="Select Coin"
@@ -14,15 +9,22 @@
         v-model="coin"
         class="dropdown"
       />
-      <p class="wallet">{{ coin | assetToSymbol }} wallet address</p>
-      <div class="address-details">
-        <div class="address">
-          <p>{{ address }}</p>
+      <template v-if="wallets.fetching">
+        <div class="spinner-container">
+          <spinner />
         </div>
-        <div class="icon-wrapper">
-          <Copy role="button" @click="copyAddress" />
+      </template>
+      <template v-else>
+        <p class="wallet">{{ coin }} wallet address</p>
+        <div class="address-details">
+          <div class="address">
+            <p>{{ address }}</p>
+          </div>
+          <div class="icon-wrapper">
+            <Copy role="button" @click="copyAddress" />
+          </div>
         </div>
-      </div>
+      </template>
     </template>
   </Deposit>
 </template>
@@ -122,12 +124,27 @@ export default {
   },
   computed: mapGetters('wallets', ['wallets']),
   methods: {
+    /**
+     * Sets the coin value based on the given currency.
+     *
+     * @param {Object} currency - The currency object containing the name and network.
+     * @return {void}
+     */
     setCoin(currency) {
       this.coin = `${currency.name} (${currency.network})`;
     },
+    /**
+     * Copies the address to the clipboard.
+     */
     copyAddress() {
       copy(this.address, 'Copied wallets address');
     },
+    /**
+     * Sets the address based on the provided value.
+     *
+     * @param {string} value - The value containing the token and network information.
+     * @return {Promise<void>} - A promise that resolves when the address is set.
+     */
     async setAddress(value) {
       const token = value.split(' ')[0];
       const network = value.split(' ')[1].replace(/[()]/g, '');
@@ -136,21 +153,13 @@ export default {
         wallet =>
           wallet.asset === assetToSymbol(token) && wallet.network === network,
       );
-      console.log(index);
-      console.log(assetToSymbol(token), network, value);
-      console.log(this.wallets.results);
-      console.log(
-        'reward',
-        this.wallets.results.findIndex(
-          wallet =>
-            wallet.asset === assetToSymbol(token) && wallet.network === network,
-        ),
-      );
 
       if (index < 0) {
         this.processing = true;
 
         try {
+          console.log('here', token);
+          console.log('buddy', assetToSymbol(token));
           const { success } = await wallets.createAddress({
             asset: assetToSymbol(token),
             network,
@@ -165,22 +174,19 @@ export default {
       } else {
         this.address = this.wallets.results[index].address;
       }
-
-      // this.address =
-      //   this.wallets.results.find(
-      //     wallet => wallet.currency === assetToSymbol(value),
-      //   )?.address || '';
     },
     ...mapActions('wallets', ['fetchWallets']),
   },
   watch: {
+    /**
+     * Sets the address for the coin.
+     *
+     * @param {type} value - The value to set the address to.
+     */
     coin(value) {
       this.address = '';
       this.setAddress(value);
     },
-    // wallets() {
-    //   this.setAddress(this.coin);
-    // },
   },
 };
 </script>

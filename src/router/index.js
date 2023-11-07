@@ -113,7 +113,7 @@ router.beforeEach(async (to, from, next) => {
     }
   } else {
     if (!isAuthenticated) {
-      next({ name: 'SignIn' });
+      next({ name: 'Welcome' });
     }
   }
 

@@ -14,6 +14,7 @@ export { default as Tron } from './currencies/tron.svg';
 export { default as Dash } from './currencies/dash.svg';
 export { default as Doge } from './currencies/doge.svg';
 export { default as Litecoin } from './currencies/litecoin.svg';
+export { default as Stellar } from './currencies/stellar.svg';
 
 export { default as Back } from './icons/back.svg';
 export { default as Copy } from './icons/copy.svg';
